@@ -13,23 +13,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
+
       - uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: true
 
-      - run: gradle wrapper --gradle-version 8.7
-      - run: ./gradlew assembleDebug --no-daemon
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
 
-      - name: 重新命名加上版號
+      - name: 編譯
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      - name: 準備檔案
         run: |
           mkdir -p out
           cp app/build/outputs/apk/debug/app-debug.apk \
              out/speedcam-${{ github.run_number }}.apk
 
-      - name: 發布 Release
-        uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
           name: 測速提醒 build ${{ github.run_number }}
