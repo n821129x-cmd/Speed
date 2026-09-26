@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.SpeedCam" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">#1B4965</item>
+        <item name="colorAccent">#F4A261</item>
+    </style>
+</resources>
